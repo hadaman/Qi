@@ -4,28 +4,519 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>हिंदी व्याकरण क्विज़</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* बेसिक पेज सेटअप */
+    body {
+      font-family: "Noto Sans Devanagari", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(270deg, #ffecd2, #fcb69f, #a1c4fd, #c2e9fb);
+      background-size: 800% 800%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* क्विज़ बॉक्स */
+    #quiz-container {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    #question {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      background: #f0f0f0;
+      border: 2px solid transparent;
+      padding: 12px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .option:hover {
+      background: #e0e0e0;
+      transform: translateY(-2px);
+    }
+
+    .option.correct {
+      background: #4caf50;
+      color: #fff;
+      border-color: #388e3c;
+      animation: bounce 0.5s;
+    }
+
+    .option.wrong {
+      background: #f44336;
+      color: #fff;
+      border-color: #d32f2f;
+      animation: shake 0.5s;
+    }
+
+    #next-btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+      display: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #next-btn:hover {
+      background-color: #0056b3;
+    }
+
+    #score, #streak, #timer {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+    }
+
+    #progress-container {
+      width: 100%;
+      height: 8px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    #progress-bar {
+      width: 0;
+      height: 100%;
+      background-color: #007bff;
+      transition: width 0.4s ease;
+    }
+
+    #notification {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #f44336;
+    }
+
+    #report {
+      text-align: left;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    #report h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    /* Animations */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Confetti particle */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: 0;
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 9999;
+      animation: fall linear;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* फ्लोटिंग पॉइंट्स */
+    .points {
+      position: absolute;
+      font-weight: bold;
+      font-size: 18px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: floatPoints 1s ease-out forwards;
+    }
+
+    @keyframes floatPoints {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-40px); opacity: 0; }
+    }
+
+    /* Achievement popup */
+    #achievement-popup {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffeb3b;
+      color: #000;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 10000;
+      display: none;
+    }
+  </style>
 </head>
 <body>
   <div id="quiz-container">
     <h1>हिंदी व्याकरण क्विज़</h1>
-    
+
     <div id="progress-container">
       <div id="progress-bar"></div>
     </div>
 
     <div id="timer">समय: 15s</div>
-    <div id="streak">स्टREAK: 0</div>
+    <div id="streak">STREAK: 0</div>
+    <div id="score">स्कोर: 0</div>
 
     <div id="question"></div>
     <div id="options"></div>
-    <div id="score"></div>
-    <button id="next-btn">अगला सवाल</button>
     <div id="notification"></div>
+    <button id="next-btn">अगला सवाल</button>
+    <div id="report"></div>
   </div>
 
   <div id="achievement-popup"></div>
 
-  <script src="script.js"></script>
+  <script>
+    let questions = [
+      {
+        "question": "संधि किसे कहते हैं?",
+        "options": ["दो शब्दों का मिलन", "विराम चिन्ह", "क्रिया का रूप", "समानार्थक शब्द"],
+        "answer": "दो शब्दों का मिलन"
+      },
+      {
+        "question": "निम्नलिखित में से संज्ञा कौन-सी है?",
+        "options": ["खेलना", "विद्यालय", "सुंदर", "जल्दी"],
+        "answer": "विद्यालय"
+      },
+      {
+        "question": "सर्वनाम का प्रयोग किसके लिए होता है?",
+        "options": ["संज्ञा की जगह", "क्रिया की जगह", "विशेषण की जगह", "सर्वनाम की जगह"],
+        "answer": "संज्ञा की जगह"
+      },
+      {
+        "question": "‘चलो’ शब्द किस वचन का है?",
+        "options": ["एकवचन", "बहुवचन", "द्विवचन", "निश्चय नहीं"],
+        "answer": "बहुवचन"
+      },
+      {
+        "question": "सही वाक्य चुनिए:",
+        "options": ["मैं स्कूल जाऊँगा", "मैं स्कूल जाता हूँ", "मैं स्कूल जाया", "मैं स्कूल गया था"],
+        "answer": "मैं स्कूल जाऊँगा"
+      },
+      {
+        "question": "‘राम ने सीता को फूल दिया’ में कर्ता कौन है?",
+        "options": ["सीता", "राम", "फूल", "नहीं पता"],
+        "answer": "राम"
+      },
+      {
+        "question": "सही विकल्प चुनिए: 'राम और श्याम ___ गए।'",
+        "options": ["खेल", "खेलते", "खेलना", "खेलकर"],
+        "answer": "खेलते"
+      },
+      {
+        "question": "‘सुंदर’ किस प्रकार का शब्द है?",
+        "options": ["संज्ञा", "विशेषण", "क्रिया", "सर्वनाम"],
+        "answer": "विशेषण"
+      },
+      {
+        "question": "अत्यधिक प्रयोग होने वाला शुद्ध शब्द है:",
+        "options": ["कर्मा", "करमा", "कर्म", "कर्मा"],
+        "answer": "कर्म"
+      },
+      {
+        "question": "सही वचन चुनिए: 'तुम ____ खेल रहे हो।'",
+        "options": ["खेलता", "खेलते", "खेलती", "खेलता हूँ"],
+        "answer": "खेलते"
+      },
+      {
+        "question": "सही पर्यायवाची चुनिए: 'दुख' का पर्यायवाची है:",
+        "options": ["सुख", "पीड़ा", "शांति", "आनंद"],
+        "answer": "पीड़ा"
+      },
+      {
+        "question": "‘मैंने किताब पढ़ी’ में क्या किया गया है?",
+        "options": ["कृती बताई", "अवस्था बताई", "स्थान बताई", "समय बताई"],
+        "answer": "कृती बताई"
+      },
+      {
+        "question": "संधि में 'राम' + 'अचर' = ?",
+        "options": ["रामचर", "रामअचर", "राम-चर", "राम+चर"],
+        "answer": "रामचर"
+      },
+      {
+        "question": "सही लिंग चुनिए: 'लड़की' का लिंग है",
+        "options": ["पुल्लिंग", "स्त्रीलिंग", "नपुंसकलिंग", "निश्चय नहीं"],
+        "answer": "स्त्रीलिंग"
+      },
+      {
+        "question": "सही वाक्य चुनिए:",
+        "options": ["हम स्कूल जा रहे हैं", "हम स्कूल जारहे हैं", "हम स्कूल जा रहें हैं", "हम स्कूल जारहे हैं"],
+        "answer": "हम स्कूल जा रहे हैं"
+      },
+      {
+        "question": "सही विकल्प चुनिए: 'मैंने उसे देखा और वह ____ हँसी।'",
+        "options": ["है", "हैं", "हँसा", "हँसी"],
+        "answer": "हँसी"
+      },
+      {
+        "question": "‘जल्दी’ शब्द किस प्रकार का है?",
+        "options": ["संज्ञा", "विशेषण", "क्रिया", "क्रियाविशेषण"],
+        "answer": "क्रियाविशेषण"
+      },
+      {
+        "question": "‘सूरज उगता है’ में क्रिया कौन-सी है?",
+        "options": ["सूरज", "उगता", "है", "नहीं पता"],
+        "answer": "उगता"
+      },
+      {
+        "question": "सही वचन चुनिए: 'वह और मैं ____ गए।'",
+        "options": ["स्कूल", "स्कूल गए", "स्कूल जाती", "स्कूल जाना"],
+        "answer": "स्कूल गए"
+      },
+      {
+        "question": "सही पर्यायवाची चुनिए: 'बड़ा' का पर्यायवाची है:",
+        "options": ["छोटा", "विशाल", "मोटा", "संतुलित"],
+        "answer": "विशाल"
+      }
+    ];
+    let currentIndex = 0;
+    let score = 0;
+    let streak = 0;
+    let level = 1;
+    let achievements = [];
+    let allowClick = true;
+    let timer;
+    let timeLeft = 15;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      showQuestion();
+      document.getElementById("next-btn").addEventListener("click", () => {
+        if (allowClick) {
+          currentIndex++;
+          showQuestion();
+          document.getElementById("next-btn").style.display = "none";
+          document.getElementById("notification").innerText = "";
+        }
+      });
+    });
+
+    function showQuestion() {
+      if (currentIndex >= questions.length) {
+        showFinalReport();
+        return;
+      }
+
+      let q = questions[currentIndex];
+      document.getElementById("question").innerText = `${currentIndex + 1}. ${q.question}`;
+
+      let optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      q.options.forEach((opt) => {
+        let button = document.createElement("button");
+        button.innerText = opt;
+        button.classList.add("option");
+        button.addEventListener("click", () => checkAnswer(button, q.answer));
+        optionsDiv.appendChild(button);
+      });
+
+      updateProgress();
+      startTimer();
+      allowClick = true;
+    }
+
+    function checkAnswer(selectedButton, answer) {
+      if (!allowClick) return;
+      allowClick = false;
+      clearInterval(timer);
+
+      let options = document.querySelectorAll(".option");
+      options.forEach(button => {
+        if (button.innerText === answer) {
+          button.classList.add("correct");
+        } else {
+          button.classList.add("wrong");
+        }
+        button.disabled = true;
+      });
+
+      if (selectedButton.innerText === answer) {
+        score += 10;
+        streak++;
+        showFloatingPoints(selectedButton, 10);
+        showNotification("सही उत्तर! +10 अंक", "green");
+        checkAchievements();
+        createConfetti();
+      } else {
+        streak = 0;
+        showNotification("गलत उत्तर।", "red");
+      }
+
+      updateScore();
+      updateStreak();
+      document.getElementById("next-btn").style.display = "block";
+    }
+
+    function showFinalReport() {
+      document.getElementById("quiz-container").innerHTML = `
+        <h1>क्विज़ रिपोर्ट</h1>
+        <p>आपने 20 में से ${score / 10} प्रश्नों के सही उत्तर दिए हैं।</p>
+        <p>आपका कुल स्कोर: ${score}</p>
+        <div id="report-details"></div>
+        <button class="option" onclick="location.reload()">दोबारा खेलें</button>
+      `;
+      let reportDetails = document.getElementById("report-details");
+      questions.forEach((q, index) => {
+        let p = document.createElement("p");
+        p.innerHTML = `<strong>प्रश्न ${index + 1}:</strong> ${q.question}<br>
+                       <strong>सही उत्तर:</strong> ${q.answer}`;
+        reportDetails.appendChild(p);
+      });
+    }
+
+    function updateProgress() {
+      const progressBar = document.getElementById("progress-bar");
+      const progress = (currentIndex / questions.length) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+
+    function updateScore() {
+      document.getElementById("score").innerText = `स्कोर: ${score}`;
+    }
+
+    function updateStreak() {
+      document.getElementById("streak").innerText = `STREAK: ${streak}`;
+    }
+
+    function startTimer() {
+      timeLeft = 15;
+      document.getElementById("timer").innerText = `समय: ${timeLeft}s`;
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = `समय: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          checkAnswer(null, null); // Time's up
+          showNotification("समय समाप्त! अगला प्रश्न", "red");
+        }
+      }, 1000);
+    }
+
+    function showNotification(message, color) {
+      const notification = document.getElementById("notification");
+      notification.innerText = message;
+      notification.style.color = color;
+    }
+
+    function showFloatingPoints(element, points) {
+      const rect = element.getBoundingClientRect();
+      const pointsSpan = document.createElement("span");
+      pointsSpan.className = "points";
+      pointsSpan.innerText = `+${points}`;
+      pointsSpan.style.left = `${rect.left + rect.width / 2}px`;
+      pointsSpan.style.top = `${rect.top}px`;
+      document.body.appendChild(pointsSpan);
+      pointsSpan.addEventListener("animationend", () => {
+        pointsSpan.remove();
+      });
+    }
+
+    function createConfetti() {
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = `${Math.random() * window.innerWidth}px`;
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+        document.body.appendChild(confetti);
+        confetti.addEventListener("animationend", () => {
+          confetti.remove();
+        });
+      }
+    }
+
+    function showAchievement(message) {
+      const popup = document.getElementById("achievement-popup");
+      popup.innerText = message;
+      popup.style.display = "block";
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 3000);
+    }
+
+    function checkAchievements() {
+      const currentAchievement = achievements.find(a => a.streak === streak);
+      if (currentAchievement) {
+        showAchievement(currentAchievement.message);
+      }
+    }
+
+    achievements = [
+      { streak: 3, message: "बहुत खूब! 3 का स्ट्रीक!" },
+      { streak: 5, message: "वाह! 5 का स्ट्रीक! आप कमाल कर रहे हैं!" },
+      { streak: 10, message: "असाधारण! 10 का स्ट्रीक!" }
+    ];
+  </script>
 </body>
 </html>
