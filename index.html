@@ -352,12 +352,10 @@
     document.addEventListener("DOMContentLoaded", () => {
       showQuestion();
       document.getElementById("next-btn").addEventListener("click", () => {
-        if (allowClick) {
           currentIndex++;
           showQuestion();
           document.getElementById("next-btn").style.display = "none";
           document.getElementById("notification").innerText = "";
-        }
       });
     });
 
@@ -390,26 +388,33 @@
       allowClick = false;
       clearInterval(timer);
 
-      let options = document.querySelectorAll(".option");
-      options.forEach(button => {
-        if (button.innerText === answer) {
-          button.classList.add("correct");
-        } else {
-          button.classList.add("wrong");
-        }
-        button.disabled = true;
-      });
-
-      if (selectedButton.innerText === answer) {
-        score += 10;
-        streak++;
-        showFloatingPoints(selectedButton, 10);
-        showNotification("सही उत्तर! +10 अंक", "green");
-        checkAchievements();
-        createConfetti();
-      } else {
+      // Handle the case when the timer runs out (selectedButton is null)
+      if (selectedButton === null) {
         streak = 0;
-        showNotification("गलत उत्तर।", "red");
+        showNotification("समय समाप्त! अगला प्रश्न", "red");
+      } else {
+        // Normal answer check
+        let options = document.querySelectorAll(".option");
+        options.forEach(button => {
+          if (button.innerText === answer) {
+            button.classList.add("correct");
+          } else {
+            button.classList.add("wrong");
+          }
+          button.disabled = true;
+        });
+
+        if (selectedButton.innerText === answer) {
+          score += 10;
+          streak++;
+          showFloatingPoints(selectedButton, 10);
+          showNotification("सही उत्तर! +10 अंक", "green");
+          checkAchievements();
+          createConfetti();
+        } else {
+          streak = 0;
+          showNotification("गलत उत्तर।", "red");
+        }
       }
 
       updateScore();
@@ -457,7 +462,6 @@
         if (timeLeft <= 0) {
           clearInterval(timer);
           checkAnswer(null, null); // Time's up
-          showNotification("समय समाप्त! अगला प्रश्न", "red");
         }
       }, 1000);
     }
