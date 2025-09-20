@@ -1,85 +1,294 @@
-/* बेसिक पेज सेटअप */
-body {
-  font-family: "Noto Sans Devanagari", Arial, sans-serif;
-  background: linear-gradient(to right, #ffecd2, #fcb69f);
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
 }
 
-/* क्विज़ बॉक्स */
-#quiz-container {
-  background: #fff;
-  padding: 25px 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  max-width: 500px;
-  width: 90%;
-  text-align: center;
-  animation: fadeIn 0.6s ease-in-out;
+body{
+    background-color: #e7e7e7;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 28px;
-  font-weight: bold;
+h2{
+    letter-spacing: 2px;
+    color: #19b9c5;
+    font-size: 32px;
 }
 
-/* सवाल */
-#question {
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: #444;
+.text-center{
+    text-align: center;
 }
 
-/* विकल्प */
-.option {
-  background: #f4f4f4;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
-  margin: 8px 0;
-  width: 100%;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s;
+.btn{
+    padding: 12px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid transparent;
 }
 
-.option:hover {
-  background: #ffcc80;
-  border-color: #ff9800;
+.btn-primary{
+    background-color: #19b9c5;
+    border-color: #19b9c5;
 }
 
-/* अगला सवाल बटन */
-#next-btn {
-  background: #ff5722;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  margin-top: 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s;
+.btn-primary:hover{
+    background-color: #3f3b39;
+    border-color: #3f3b39;
 }
 
-#next-btn:hover {
-  background: #e64a19;
+.main-wrapper {
+    padding: 30px 30px;
+    box-shadow: 0 0 5px #00000024;
+    max-width: 700px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 10px;
 }
 
-/* अंतिम स्कोर */
-#quiz-container h2 {
-  color: #2e7d32;
-  font-size: 22px;
+.userLogo-wrapper{
+    text-align: center;
 }
 
-/* एनिमेशन */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+.userLogo-wrapper figure img{
+    width: 150px;
 }
+
+.userLogo-wrapper h2{
+    margin: 10px 0 20px;
+}
+
+.userLogo-wrapper h5{
+    color: #3f3b39;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.userLogo-wrapper .form-group{
+    margin: 30px 0 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.userLogo-wrapper .form-group .form-control{
+    width: 100%;
+    height: 40px;
+    background-color: #fff;
+    border: none;
+    padding: 0 10px;
+    color: #3f3b39;
+    font-weight: 600;
+    border: 1px solid #3f3b39;
+    width: calc(100% - 140px);
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.userLogo-wrapper .form-group .form-control.form-error{
+    border-color: #f71717;
+    background: #fff4f4;
+}
+.userLogo-wrapper .form-group a{
+    height: 40px;
+    width: 120px;
+    background-color: #19b9c5;
+    color: #fff;
+    text-align: center;
+    line-height: 40px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all .4s;
+}
+
+.userLogo-wrapper .form-group a:hover{
+    background-color: #3f3b39;
+}
+
+.userLogo-wrapper p{
+    font-size: 18px;
+    letter-spacing: 1px;
+    opacity: .8;
+}
+
+/* Category Section */
+.selectCategory-wrapper{
+    border-top: 1px solid #c1c1c1;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.selectCategory-wrapper h2{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.selectCategory-wrapper ul{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.selectCategory-wrapper ul li{
+    width: calc(50% - 10px);
+    cursor: pointer;
+    list-style: none;
+    text-align: center;
+    border-radius: 5px;
+    color: #5c5c5c;
+    padding: 15px 10px;
+    border: 2px solid #19b9c5;
+    background: #f2feff;
+    margin-bottom: 20px;
+}
+
+.selectCategory-wrapper ul li.active{
+    background-color: #19b9c5;
+    color: #fff;
+}
+
+.third-step ul{
+    margin: 20px 0 30px;
+}
+.third-step ul li{
+    color: #424242;
+    margin: 12px 0;
+    list-style: none;
+}
+
+.third-step ul li span{
+    display: inline-block;
+    font-weight: 600;
+}
+
+.btns-group{
+    display: flex;
+    justify-content: center;
+}
+
+.btns-group .btn{
+    margin: 0 8px;
+}
+
+
+
+/* Second Step start */
+#selectCat{
+    color: #3f3b39;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+.scoreTime{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 0;
+}
+.scoreTime #taskTime{
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #19b9c5;
+    border-radius: 50%;
+    border: 2px solid #19b9c5;
+}
+.scoreTime .score-wrap{
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.question-box{
+    border: 2px solid #3f3b39;
+    border-radius: 10px;
+    padding: 45px 20px 20px;
+    position: relative;
+}
+#currentQues{
+    color: #3f3b39;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    line-height: 26px;
+}
+.totalQuestionCurrent{
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #19b9c5;
+    border-radius: 50%;
+    border: 2px solid #19b9c5;
+    background-color: #fff;
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.questionList{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 30px 0 20px;
+}
+
+.questionList li{
+    width: calc(50% - 10px);
+    cursor: pointer;
+    list-style: none;
+    text-align: center;
+    border-radius: 50px;
+    color: #19b9c5;
+    padding: 15px 10px;
+    border: 2px solid #19b9c5;
+    background: #fff;
+    margin-bottom: 20px;
+    transition: all .4s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.questionList li:hover{
+    background-color: #19b9c5;
+    color: #fff;
+}
+
+.nextQuestionBtn a{
+    display: inline-block;
+}
+
+.question-wrap{
+    display: none;
+}
+.question-wrap.active{
+    display: block;
+}
+
+.rightAns.active{
+    background: #a7ffa7;
+    border-color: #48ff48;
+    color: #009200;
+}
+
+.wrongAns.active{
+    background: #ffa3a3;
+    border-color: #e74848;
+    color: #a71515;
+}
+
+#score{
+    font-weight: 600;
+}
+#submitQues, #backQues{
+    display: none;
+}
+/* Second Step close */
