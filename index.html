@@ -7,12 +7,24 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>हिंदी व्याकरण क्विज़</h1>
   <div id="quiz-container">
+    <h1>हिंदी व्याकरण क्विज़</h1>
+    
+    <div id="progress-container">
+      <div id="progress-bar"></div>
+    </div>
+
+    <div id="timer">समय: 15s</div>
+    <div id="streak">स्टREAK: 0</div>
+
     <div id="question"></div>
     <div id="options"></div>
+    <div id="score"></div>
     <button id="next-btn">अगला सवाल</button>
+    <div id="notification"></div>
   </div>
+
+  <div id="achievement-popup"></div>
 
   <script src="script.js"></script>
 </body>
