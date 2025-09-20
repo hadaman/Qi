@@ -352,10 +352,14 @@
     document.addEventListener("DOMContentLoaded", () => {
       showQuestion();
       document.getElementById("next-btn").addEventListener("click", () => {
-          currentIndex++;
+        currentIndex++;
+        if (currentIndex < questions.length) {
           showQuestion();
           document.getElementById("next-btn").style.display = "none";
           document.getElementById("notification").innerText = "";
+        } else {
+          showFinalReport();
+        }
       });
     });
 
