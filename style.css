@@ -1,294 +1,225 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
-
-*{
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    box-sizing: border-box;
+/* बेसिक पेज सेटअप */
+body {
+  font-family: "Noto Sans Devanagari", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(270deg, #ffecd2, #fcb69f, #a1c4fd, #c2e9fb);
+  background-size: 800% 800%;
+  animation: gradientBG 15s ease infinite;
 }
 
-body{
-    background-color: #e7e7e7;
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-h2{
-    letter-spacing: 2px;
-    color: #19b9c5;
-    font-size: 32px;
+/* क्विज़ बॉक्स */
+#quiz-container {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  animation: fadeIn 0.6s ease-in-out;
+  box-sizing: border-box;
 }
 
-.text-center{
-    text-align: center;
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 28px;
+  font-weight: bold;
 }
 
-.btn{
-    padding: 12px 40px;
-    border-radius: 50px;
-    text-decoration: none;
-    color: #fff;
-    border: 2px solid transparent;
+#question {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #444;
 }
 
-.btn-primary{
-    background-color: #19b9c5;
-    border-color: #19b9c5;
+/* विकल्प */
+.option {
+  background: #f4f4f4;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px 0;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
-.btn-primary:hover{
-    background-color: #3f3b39;
-    border-color: #3f3b39;
+.option:hover {
+  background: #ffcc80;
+  border-color: #ff9800;
 }
 
-.main-wrapper {
-    padding: 30px 30px;
-    box-shadow: 0 0 5px #00000024;
-    max-width: 700px;
-    margin: 30px auto;
-    background: #fff;
-    border-radius: 10px;
+.option.correct {
+  background-color: #4caf50 !important;
+  color: white;
+  animation: correctFlash 0.5s ease;
 }
 
-.userLogo-wrapper{
-    text-align: center;
+.option.wrong {
+  background-color: #f44336 !important;
+  color: white;
+  animation: wrongFlash 0.5s ease;
 }
 
-.userLogo-wrapper figure img{
-    width: 150px;
+@keyframes correctFlash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
-.userLogo-wrapper h2{
-    margin: 10px 0 20px;
+@keyframes wrongFlash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
-.userLogo-wrapper h5{
-    color: #3f3b39;
-    font-size: 18px;
-    letter-spacing: 1px;
+/* Shake animation */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
 }
 
-.userLogo-wrapper .form-group{
-    margin: 30px 0 20px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: flex-start;
+.shake {
+  animation: shake 0.5s;
 }
 
-.userLogo-wrapper .form-group .form-control{
-    width: 100%;
-    height: 40px;
-    background-color: #fff;
-    border: none;
-    padding: 0 10px;
-    color: #3f3b39;
-    font-weight: 600;
-    border: 1px solid #3f3b39;
-    width: calc(100% - 140px);
-    letter-spacing: 1px;
-    font-weight: 500;
+/* प्रोग्रेस बार */
+#progress-container {
+  width: 100%;
+  background: #ddd;
+  border-radius: 10px;
+  height: 15px;
+  margin-bottom: 20px;
+  overflow: hidden;
 }
 
-.userLogo-wrapper .form-group .form-control.form-error{
-    border-color: #f71717;
-    background: #fff4f4;
-}
-.userLogo-wrapper .form-group a{
-    height: 40px;
-    width: 120px;
-    background-color: #19b9c5;
-    color: #fff;
-    text-align: center;
-    line-height: 40px;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: all .4s;
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+  border-radius: 10px;
 }
 
-.userLogo-wrapper .form-group a:hover{
-    background-color: #3f3b39;
+/* स्कोर */
+#score {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #2e7d32;
+  font-size: 16px;
 }
 
-.userLogo-wrapper p{
-    font-size: 18px;
-    letter-spacing: 1px;
-    opacity: .8;
+/* नोटिफिकेशन */
+#notification {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 16px;
 }
 
-/* Category Section */
-.selectCategory-wrapper{
-    border-top: 1px solid #c1c1c1;
-    padding-top: 20px;
-    margin-top: 20px;
+.notification.correct { color: #4caf50; }
+.notification.wrong { color: #f44336; }
+
+/* टाइमर और स्टREAK */
+#timer { font-size: 16px; font-weight: bold; color: #ff5722; margin-bottom: 10px; }
+#streak { font-size: 16px; font-weight: bold; margin-bottom: 10px; }
+
+/* बटन */
+#quiz-container button {
+  margin-top: 15px;
+  background: #ff5722;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
 }
 
-.selectCategory-wrapper h2{
-    text-align: center;
-    margin-bottom: 30px;
+#quiz-container button:hover { background: #e64a19; }
+
+/* एनिमेशन */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-.selectCategory-wrapper ul{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+/* Confetti particle */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: 0;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 9999;
+  animation: fall linear;
 }
 
-.selectCategory-wrapper ul li{
-    width: calc(50% - 10px);
-    cursor: pointer;
-    list-style: none;
-    text-align: center;
-    border-radius: 5px;
-    color: #5c5c5c;
-    padding: 15px 10px;
-    border: 2px solid #19b9c5;
-    background: #f2feff;
-    margin-bottom: 20px;
+@keyframes fall {
+  to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
 
-.selectCategory-wrapper ul li.active{
-    background-color: #19b9c5;
-    color: #fff;
+/* फ्लोटिंग पॉइंट्स */
+.points {
+  position: absolute;
+  font-weight: bold;
+  font-size: 18px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: floatPoints 1s ease-out forwards;
 }
 
-.third-step ul{
-    margin: 20px 0 30px;
-}
-.third-step ul li{
-    color: #424242;
-    margin: 12px 0;
-    list-style: none;
+@keyframes floatPoints {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-40px); opacity: 0; }
 }
 
-.third-step ul li span{
-    display: inline-block;
-    font-weight: 600;
+/* Achievement popup */
+#achievement-popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffeb3b;
+  color: #000;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 10000;
+  display: none;
+  animation: popupAnimation 0.5s ease;
 }
 
-.btns-group{
-    display: flex;
-    justify-content: center;
+@keyframes popupAnimation {
+  0% { opacity: 0; transform: translate(-50%, -20px); }
+  100% { opacity: 1; transform: translate(-50%, 0); }
 }
 
-.btns-group .btn{
-    margin: 0 8px;
+/* मोबाइल रेस्पॉन्सिव */
+@media (max-width: 600px) {
+  #quiz-container { padding: 20px 15px; }
+  h1 { font-size: 24px; }
+  #question { font-size: 18px; }
+  .option { font-size: 15px; padding: 10px; }
+  #score, #notification, #timer, #streak { font-size: 14px; }
+  #quiz-container button { font-size: 15px; padding: 10px 15px; }
 }
-
-
-
-/* Second Step start */
-#selectCat{
-    color: #3f3b39;
-    font-size: 20px;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-.scoreTime{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 30px 0;
-}
-.scoreTime #taskTime{
-    width: 70px;
-    height: 70px;
-    line-height: 70px;
-    font-weight: 600;
-    font-size: 20px;
-    color: #19b9c5;
-    border-radius: 50%;
-    border: 2px solid #19b9c5;
-}
-.scoreTime .score-wrap{
-    font-size: 18px;
-    text-transform: uppercase;
-}
-
-.question-box{
-    border: 2px solid #3f3b39;
-    border-radius: 10px;
-    padding: 45px 20px 20px;
-    position: relative;
-}
-#currentQues{
-    color: #3f3b39;
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    line-height: 26px;
-}
-.totalQuestionCurrent{
-    width: 70px;
-    height: 70px;
-    line-height: 70px;
-    font-weight: 600;
-    font-size: 20px;
-    color: #19b9c5;
-    border-radius: 50%;
-    border: 2px solid #19b9c5;
-    background-color: #fff;
-    position: absolute;
-    top: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.questionList{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    list-style: none;
-    margin: 30px 0 20px;
-}
-
-.questionList li{
-    width: calc(50% - 10px);
-    cursor: pointer;
-    list-style: none;
-    text-align: center;
-    border-radius: 50px;
-    color: #19b9c5;
-    padding: 15px 10px;
-    border: 2px solid #19b9c5;
-    background: #fff;
-    margin-bottom: 20px;
-    transition: all .4s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.questionList li:hover{
-    background-color: #19b9c5;
-    color: #fff;
-}
-
-.nextQuestionBtn a{
-    display: inline-block;
-}
-
-.question-wrap{
-    display: none;
-}
-.question-wrap.active{
-    display: block;
-}
-
-.rightAns.active{
-    background: #a7ffa7;
-    border-color: #48ff48;
-    color: #009200;
-}
-
-.wrongAns.active{
-    background: #ffa3a3;
-    border-color: #e74848;
-    color: #a71515;
-}
-
-#score{
-    font-weight: 600;
-}
-#submitQues, #backQues{
-    display: none;
-}
-/* Second Step close */
